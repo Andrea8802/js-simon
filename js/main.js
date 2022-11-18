@@ -4,14 +4,15 @@
 const output = document.getElementById("numeri");
 const input = document.getElementById("input");
 const corretti = document.getElementById("corretti")
+const button = document.getElementById("button");
 
 // Array
 let arrNum = [];
 let numeriGiusti = 0;
+let user = [];
 
 // Generiamo 5 numeri random
-arrNum = numRanUnici(5);
-console.log(arrNum)
+arrNum = [1,1,1,1,1];
 
 // Stampare i numeri a schermo a schermo
 for (let i = 0; i < arrNum.length; i++){
@@ -25,18 +26,41 @@ const time = setTimeout(
     }
 ,3000);
 
-// Chiedere all'utente di inserire i numeri
-for (let i = 0; i < arrNum.length; i++){
-    let user = parseInt(prompt("inseri"));
-    if (arrNum.includes(user)){
-        numeriGiusti++
+// Far inserire i numeri all'utente
+button.addEventListener("click",
+    function(){
+        if (input.value >= 0){
+            user.push(parseInt(input.value));
+            input.value = null;
+            if (user.length >= arrNum.length){
+                input.style.display = "none";
+                button.style.display = "none";
+
+                for (let i = 0; i < arrNum.length; i++){
+                    if (arrNum[i] === user[i]){
+                        numeriGiusti++;
+                    }
+                }
+
+
+                // Stampare quanti numeri sono giusti
+
+                if (numeriGiusti === arrNum.length){
+                    corretti.innerHTML = "I numeri giusti sono: " + numeriGiusti + ", hai indovinato tutti i numeri!"
+
+                } else if (numeriGiusti === 0){
+                    corretti.innerHTML = "Hai sbagliato " + (arrNum.length - numeriGiusti) + " numeri, non ne hai indovinato nessuno!"
+
+                } else{
+                    corretti.innerHTML = "I numeri giusti sono: " + numeriGiusti + " e quelli sbagliati " + (arrNum.length - numeriGiusti);
+                }
+                
+            }
+        } else{
+            alert("Devi inserire un numero!")
+        }
     }
-}
-
-// Verificare quanti numeri sono giusti
-corretti.innerHTML = "I numeri giusti sono: " + numeriGiusti + " e quelli sbagliati " + (arrNum.length - numeriGiusti);
-
-
+)
 
 // Funzioni-----------------------------
 
