@@ -10,6 +10,7 @@ const button = document.getElementById("button");
 let arrNum = [];
 let score = 0;
 let numeriUtente = [];
+let numeriIndovinati = [];
 
 // Generiamo 5 numeri random
 arrNum = numRanUnici(5);
@@ -20,48 +21,63 @@ for (let i = 0; i < arrNum.length; i++){
 }
 
 // Creare un timer di 30 secondi che nasconde i numeri
-// const time = setTimeout(
-//     function(){
-
-//         // Rimuovere completamente la lista per evitare di vedere i risultati nel codice sorgente
-//         output.innerHTML = "";  
-//     }
-// ,3000); // DEBUG TIME
+const time = setTimeout(
+    function(){
+        // Rimuovere completamente la lista per evitare di vedere i risultati nel codice sorgente
+        output.innerHTML = "";  
+        button.classList.remove("hidden");
+        input.classList.remove("hidden");
+    }
+,30000);
 
 // Bottone Inserire numero
 button.addEventListener("click",
     function(){
+        let valoreInput = parseInt(input.value);
 
         // Condizione per evitare una stringa come dato
-        if (input.value >= 0){
-            numeriUtente.push(parseInt(input.value));
+        if (input.value >= 0 && input.value != ""){
+            numeriUtente.push(parseInt(valoreInput));
+            // Controllo numeri giusti
+            if (arrNum.includes(valoreInput)){
+                score++;
+                numeriIndovinati.push(valoreInput);
+            }
             input.value = null;
 
             // Condizione per fermare l'input quando si arriva al numero massimo
             if (numeriUtente.length >= arrNum.length){
                 input.style.display = "none";
                 button.style.display = "none";
-
-                // Controllo numeri giusti
+                
+                // Ristampare i numeri a schermo a schermo
                 for (let i = 0; i < arrNum.length; i++){
-                    if (arrNum[i] === numeriUtente[i]){
-                        score++;
-                    }
+                    output.innerHTML += `<li>${arrNum[i]}</li>`;  
                 }
-
 
                 // Stampare quanti numeri sono giusti
                 if (score === arrNum.length){
                     risultato.innerHTML = "I numeri giusti sono: " + score + ", hai indovinato tutti i numeri!"
 
                 } else if (score === 0){
-                    risultato.innerHTML = "Hai sbagliato " + (arrNum.length - score) + " numeri, non ne hai indovinato nessuno!"
+                    risultato.innerHTML = "Hai sbagliato " + (arrNum.length - score) + " numeri, non ne hai indovinato nessuno!";
 
                 } else{
-                    risultato.innerHTML = "I numeri giusti sono: " + score + " e quelli sbagliati " + (arrNum.length - score);
-                }
-                
+
+                    // Condizione per stampare diversi output in base ai numeri
+                    if (numeriIndovinati.length === 1){
+                        risultato.innerHTML = `Hai indovinato il numero: ${numeriIndovinati}. ${score} giusto e ${arrNum.length - score} sbagliati!`;
+                        
+                    } else if (numeriIndovinati.length === arrNum.length - 1){
+                        risultato.innerHTML = `Hai indovinato i numeri: ${numeriIndovinati}. ${score} giusti e ${arrNum.length - score} sbagliato!`;
+
+                    } else{
+                        risultato.innerHTML = `Hai indovinato i numeri: ${numeriIndovinati}. ${score} giusti e ${arrNum.length - score} sbagliati!`;
+                    }
+                }     
             }
+
+        // Se non inserisci un numero
         } else{
             alert("Devi inserire un numero!")
         }

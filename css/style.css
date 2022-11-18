@@ -10,6 +10,10 @@ body{
     background-color: black;
 }
 
+.hidden{
+    display: none;
+}
+
 /* Main Rules */
 .container{
     width: 80%;
@@ -38,8 +42,13 @@ li{
     text-align: center;
 }
 
-.input-container{
+.bottom{
     margin-bottom: 60px;
+}
+
+#risultato{
+    font-size: 30px;
+    text-decoration: underline;
 }
 
 input, button{
