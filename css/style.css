@@ -1,3 +1,62 @@
-.invisibile{
-    display: none;
+/* General Rules */
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: black;
+}
+
+/* Main Rules */
+.container{
+    width: 80%;
+    margin: 50px auto;
+    height: calc(100vh - 100px);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 20px;
+}
+
+ul{
+    width: 30%;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+li{
+    list-style: none;
+    padding: 5px 0;
+    font-size: 30px;
+    text-align: center;
+}
+
+.input-container{
+    margin-bottom: 60px;
+}
+
+input, button{
+    border-radius: 8px;
+    height: 70px;
+    background-color: black;
+    color: white;
+    vertical-align: bottom;
+}
+
+input{  
+    padding: 0 20px;
+    font-size: 25px;
+}
+
+button{
+    width: 100px;
+    font-size: 20px;
+    cursor: pointer;
 }
