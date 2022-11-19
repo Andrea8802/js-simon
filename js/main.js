@@ -30,61 +30,56 @@ const time = setTimeout(
     }
 ,30000);
 
-// Bottone Inserire numero
-button.addEventListener("click",
-    function(){
-        let valoreInput = parseInt(input.value);
+// Bottone inserire numero
+button.addEventListener("click", onClickInsertButton)
 
-        // Condizione per evitare una stringa come dato
-        if (input.value >= 0 && input.value != ""){
-            numeriUtente.push(parseInt(valoreInput));
-            // Controllo numeri giusti
-            if (arrNum.includes(valoreInput)){
-                score++;
-                numeriIndovinati.push(valoreInput);
+// Funzioni------------------------------------
+
+// Funzione bottone per inserire numeri
+function onClickInsertButton(){
+    let valoreInput = parseInt(input.value);
+
+    // Condizione per evitare una stringa come dato
+    if (input.value >= 0 && input.value != ""){
+        numeriUtente.push(parseInt(valoreInput));
+        // Controllo numeri giusti
+        if (arrNum.includes(valoreInput)){
+            score++;
+            numeriIndovinati.push(valoreInput);
+        }
+        input.value = null;
+
+        // Condizione per fermare l'input quando si arriva al numero massimo
+        if (numeriUtente.length >= arrNum.length){
+            input.style.display = "none";
+            button.style.display = "none";
+            
+            // Ristampare i numeri a schermo a schermo
+            for (let i = 0; i < arrNum.length; i++){
+                output.innerHTML += `<li>${arrNum[i]}</li>`;  
             }
-            input.value = null;
 
-            // Condizione per fermare l'input quando si arriva al numero massimo
-            if (numeriUtente.length >= arrNum.length){
-                input.style.display = "none";
-                button.style.display = "none";
-                
-                // Ristampare i numeri a schermo a schermo
-                for (let i = 0; i < arrNum.length; i++){
-                    output.innerHTML += `<li>${arrNum[i]}</li>`;  
-                }
-
-                // Stampare quanti numeri sono giusti
-                if (score === arrNum.length){
-                    risultato.innerHTML = "I numeri giusti sono: " + score + ", hai indovinato tutti i numeri!"
-
-                } else if (score === 0){
-                    risultato.innerHTML = "Hai sbagliato " + (arrNum.length - score) + " numeri, non ne hai indovinato nessuno!";
-
-                } else{
-
-                    // Condizione per stampare diversi output in base ai numeri
-                    if (numeriIndovinati.length === 1){
-                        risultato.innerHTML = `Hai indovinato il numero: ${numeriIndovinati}. ${score} giusto e ${arrNum.length - score} sbagliati!`;
-                        
-                    } else if (numeriIndovinati.length === arrNum.length - 1){
-                        risultato.innerHTML = `Hai indovinato i numeri: ${numeriIndovinati}. ${score} giusti e ${arrNum.length - score} sbagliato!`;
-
-                    } else{
-                        risultato.innerHTML = `Hai indovinato i numeri: ${numeriIndovinati}. ${score} giusti e ${arrNum.length - score} sbagliati!`;
-                    }
-                }     
-            }
+            // Stampare quanti numeri sono giusti
+            if (score === arrNum.length){
+                // Sali di livello e aggiungi 1 numero in più
+                risultato.innerHTML = "I numeri giusti sono: " + score + ", hai indovinato tutti i numeri!"
+    
+                btnInizia.innerHTML = "Continua";
+    
+            } else if (score === 0){
+                risultato.innerHTML = "Hai sbagliato " + (arrNum.length - score) + " numeri, non ne hai indovinato nessuno!";
+    
+            } else{
+                risultato.innerHTML = "Hai indovinato i numeri: " + numeriIndovinati + ". " + score + " corretti e " +  (arrNum.length - score) + " errati"
+            }         
+        }
 
         // Se non inserisci un numero
-        } else{
-            alert("Devi inserire un numero!")
-        }
+    } else{
+        alert("Devi inserire un numero!");
+        input.value = null;
     }
-)
-
-// Funzioni-----------------------------
+}
 
 // Funzione che genera numeri random
 function numRandom(min, max){

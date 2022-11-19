@@ -3,125 +3,157 @@
 // Manipolazione DOM
 const input = document.getElementById("input");
 const output = document.getElementById("numeri");
-const risultato = document.getElementById("risultato")
-const button = document.getElementById("button");
 const btnInizia = document.getElementById("btn-inizia");
+const title = document.getElementById("title");
+const btnInsert = document.getElementById("button");
 
 // Array
 let arrNum = [];
-let score = 0;
 let numeriUtente = [];
 let numeriIndovinati = [];
+
+// Variabili
 let livello = 5;
+let score = 0;
+let quantitaNumeriInseriti = 0;
 
+// Click sul bottone inizia/continua
+btnInizia.addEventListener("click", onClickStartContinue);
 
-
-
-btnInizia.addEventListener("click",
-    function(){
-        risultato.innerHTML = "";
-        btnInizia.classList.add("hidden");
-        arrNum = [];
-        numeriUtente = [];
-        numeriIndovinati = [];
-        score = 0;
-        output.innerHTML = "";
-
-        // Generiamo 5 numeri random
-        arrNum = numRanUnici(livello);
-
-        // Stampare i numeri a schermo a schermo
-        for (let i = 0; i < arrNum.length; i++){
-            output.innerHTML += `<li>${arrNum[i]}</li>`;  
-        }
-        // Creare un timer di 30 secondi che nasconde i numeri
-        const time = setTimeout(
-            function(){
-                // Rimuovere completamente la lista per evitare di vedere i risultati nel codice sorgente
-                output.innerHTML = "";  
-                button.classList.remove("hidden");
-                input.classList.remove("hidden");
-            }
-        ,30000);   
-    }
-)
-
-// Bottone Inserire numero
-button.addEventListener("click",
-    function(){
-        let valoreInput = parseInt(input.value);
-
-        // Condizione per evitare una stringa come dato
-        if (input.value >= 0 && input.value != ""){
-            numeriUtente.push(parseInt(valoreInput));
-            // Controllo numeri giusti
-            if (arrNum.includes(valoreInput)){
-                score++;
-                numeriIndovinati.push(valoreInput);
-            }
-            input.value = null;
-
-        // Se non inserisci un numero
-        } else{
-            alert("Devi inserire un numero!");
-            input.value = null;
-        }
-
-        // Output
-        // Condizione per fermare l'input quando si arriva al numero massimo
-        if (numeriUtente.length >= arrNum.length){
-            button.classList.add("hidden");
-            input.classList.add("hidden");
-            
-            // Ristampare i numeri a schermo a schermo
-            for (let i = 0; i < arrNum.length; i++){
-                output.innerHTML += `<li>${arrNum[i]}</li>`;  
-            }
-
-            // Facciamo riapparire il tasto per continuare
-            btnInizia.classList.remove("hidden");
-            btnInizia.innerHTML = "Continua";
-
-
-            // Stampare quanti numeri sono giust
-            if (score === arrNum.length){
-                // Sali di livello e aggiungi 1 numero in più
-                livello++
-                risultato.innerHTML = "I numeri giusti sono: " + score + ", hai indovinato tutti i numeri! Ora i numeri diventeranno: " + livello;
-
-            } else if (score === 0){
-                risultato.innerHTML = "Hai sbagliato " + (arrNum.length - score) + " numeri, non ne hai indovinato nessuno!";
-                livello = 5;
-
-            } else{
-
-                // Condizione per stampare diversi output con il plurale/singolare corretto
-                if (numeriIndovinati.length === 1){
-                    risultato.innerHTML = `Hai indovinato il numero: ${numeriIndovinati}. ${score} giusto e ${arrNum.length - score} sbagliati!`;
-                    livello = 5;
-                    
-                } else if (numeriIndovinati.length === arrNum.length - 1){
-                    risultato.innerHTML = `Hai indovinato i numeri: ${numeriIndovinati}. ${score} giusti e ${arrNum.length - score} sbagliato!`;
-                    livello = 5;
-
-                } else{
-                    risultato.innerHTML = `Hai indovinato i numeri: ${numeriIndovinati}. ${score} giusti e ${arrNum.length - score} sbagliati!`;
-                    livello = 5;
-                }
-            }     
-        }
-    }
-)
-
+// Click sul bottone per inserire numero
+btnInsert.addEventListener("click", onClickInsertNumber);
+ 
 
 // Funzioni-----------------------------
 
-// Funzione che genera numeri random
+function onClickStartContinue(){
+
+    // Azzeramento output o valori
+    risultato.innerHTML = "";
+    btnInizia.classList.add("hidden");
+    arrNum = [];
+    numeriUtente = [];
+    numeriIndovinati = [];
+    score = 0;
+    output.innerHTML = "";
+    title.innerHTML = "";
+    quantitaNumeriInseriti = 0;
+
+    // Generiamo 5 numeri random
+    arrNum = numRanUnici(livello);
+
+    // Stampare i numeri a schermo a schermo
+    addNumber();
+
+    // Countdown
+    let secondi = 30;
+    const orologio = document.getElementById("countdown");
+    orologio.innerHTML = "Tempo Rimanente: " + secondi;
+    const countdown = setInterval(
+        function(){
+            secondi--;
+            orologio.innerHTML =  "Tempo Rimanente: " + secondi;
+            if (secondi === 0){
+                orologio.innerHTML = "";
+                clearInterval(countdown);
+            }
+        } 
+    ,1000)
+
+    // Creare un timer di 30 secondi che nasconde i numeri
+    const time = setTimeout(
+        function(){
+            // Rimuovere completamente la lista per evitare di vedere i risultati nel codice sorgente
+            output.innerHTML = "";  
+            btnInsert.classList.remove("hidden");
+            input.classList.remove("hidden");
+            title.innerHTML = "Saimon Says 2.0"
+            output.innerHTML = "Completati: " + quantitaNumeriInseriti + "/" + livello;
+
+        }
+    ,30000);
+    
+}   
+
+
+function onClickInsertNumber(){
+    let valoreInput = parseInt(input.value);
+    
+    
+    // Condizione per evitare una stringa come dato
+    if (input.value >= 0 && input.value != ""){
+
+        // Aggiorniamo contatore
+        quantitaNumeriInseriti++;
+        output.innerHTML = "Completati: " + quantitaNumeriInseriti + "/" + livello;
+
+        // Pushamo nell'arrray
+        numeriUtente.push(parseInt(valoreInput));
+
+        // Controllo numeri giusti
+        if (arrNum.includes(valoreInput)){
+            score++;
+            numeriIndovinati.push(valoreInput);
+        }
+        input.value = null;
+
+    // Se non inserisci un numero
+    } else{
+        alert("Devi inserire un numero!");
+        input.value = null;
+    }
+
+    // Output-------------
+    // Condizione per fermare l'input quando si arriva al numero massimo
+    if (numeriUtente.length >= arrNum.length){
+        btnInsert.classList.add("hidden");
+        input.classList.add("hidden");
+        output.innerHTML = "";
+
+        // Ristampare i numeri a schermo a schermo
+        addNumber();
+
+        // Facciamo riapparire il tasto per continuare
+        btnInizia.classList.remove("hidden");
+        btnInizia.innerHTML = "Riprova";
+
+        // Stampare quanti numeri sono giusti
+        const risultato = document.getElementById("risultato");
+
+        if (score === arrNum.length){
+            // Sali di livello e aggiungi 1 numero in più
+            livello++
+            risultato.innerHTML = "I numeri giusti sono: " + score + ", hai indovinato tutti i numeri! Ora diventeranno: " + livello;
+
+            risultato.style.color = "lime";
+
+            btnInizia.innerHTML = "Continua";
+
+        } else if (score === 0){
+            risultato.innerHTML = "Hai sbagliato " + (arrNum.length - score) + " numeri, non ne hai indovinato nessuno!";
+
+            risultato.style.color = "red";
+
+            livello = 5;
+
+        } else{
+            risultato.innerHTML = "Hai indovinato i numeri: " + numeriIndovinati + ". " + score + " corretti e " +  (arrNum.length - score) + " errati"
+        }     
+    }
+}
+
+
+function addNumber (){
+    for (let i = 0; i < arrNum.length; i++){
+        output.innerHTML += `<li>${arrNum[i]}</li>`;  
+    }
+}
+
 function numRandom(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Funzione per generare numeri random unici
+
 function numRanUnici(quantità){
     let array = [];
     let number
@@ -131,6 +163,5 @@ function numRanUnici(quantità){
             array.push(number);
         }
     }
-
     return array
 }

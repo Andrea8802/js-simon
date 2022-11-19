@@ -25,6 +25,7 @@ body{
     flex-direction: column;
     background-color: white;
     border-radius: 20px;
+    position: relative;
 }
 
 ul{
@@ -33,6 +34,7 @@ ul{
     display: flex;
     justify-content: center;
     gap: 20px;
+    font-size: 22px;
 }
 
 li{
@@ -67,4 +69,12 @@ button{
     width: 100px;
     font-size: 20px;
     cursor: pointer;
+}
+
+#countdown{
+    position: absolute;
+    top: 60px;
+    right: 90px;
+    font-size: 20px;
+    font-weight: bold;
 }
