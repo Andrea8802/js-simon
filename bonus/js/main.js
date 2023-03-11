@@ -22,11 +22,11 @@ btnInizia.addEventListener("click", onClickStartContinue);
 
 // Click sul bottone per inserire numero
 btnInsert.addEventListener("click", onClickInsertNumber);
- 
+
 
 // Funzioni-----------------------------
 
-function onClickStartContinue(){
+function onClickStartContinue() {
 
     // Azzeramento output o valori
     risultato.innerHTML = "";
@@ -46,42 +46,42 @@ function onClickStartContinue(){
     addNumber();
 
     // Countdown
-    let secondi = 30;
+    let secondi = 10;
     const orologio = document.getElementById("countdown");
     orologio.innerHTML = "Tempo Rimanente: " + secondi;
     const countdown = setInterval(
-        function(){
+        function () {
             secondi--;
-            orologio.innerHTML =  "Tempo Rimanente: " + secondi;
-            if (secondi === 0){
+            orologio.innerHTML = "Tempo Rimanente: " + secondi;
+            if (secondi === 0) {
                 orologio.innerHTML = "";
                 clearInterval(countdown);
             }
-        } 
-    ,1000)
+        }
+        , 1000)
 
-    // Creare un timer di 30 secondi che nasconde i numeri
+    // Creare un timer di 10 secondi che nasconde i numeri
     const time = setTimeout(
-        function(){
+        function () {
             // Rimuovere completamente la lista per evitare di vedere i risultati nel codice sorgente
-            output.innerHTML = "";  
+            output.innerHTML = "";
             btnInsert.classList.remove("hidden");
             input.classList.remove("hidden");
             title.innerHTML = "Saimon Says 2.0"
             output.innerHTML = "Completati: " + quantitaNumeriInseriti + "/" + livello;
 
         }
-    ,30000);
-    
-}   
+        , 10000);
+
+}
 
 
-function onClickInsertNumber(){
+function onClickInsertNumber() {
     let valoreInput = parseInt(input.value);
-    
-    
+
+
     // Condizione per evitare una stringa come dato
-    if (input.value >= 0 && input.value != ""){
+    if (input.value >= 0 && input.value != "") {
 
         // Aggiorniamo contatore
         quantitaNumeriInseriti++;
@@ -91,21 +91,21 @@ function onClickInsertNumber(){
         numeriUtente.push(parseInt(valoreInput));
 
         // Controllo numeri giusti
-        if (arrNum.includes(valoreInput)){
+        if (arrNum.includes(valoreInput)) {
             score++;
             numeriIndovinati.push(valoreInput);
         }
         input.value = null;
 
-    // Se non inserisci un numero
-    } else{
+        // Se non inserisci un numero
+    } else {
         alert("Devi inserire un numero!");
         input.value = null;
     }
 
     // Output-------------
     // Condizione per fermare l'input quando si arriva al numero massimo
-    if (numeriUtente.length >= arrNum.length){
+    if (numeriUtente.length >= arrNum.length) {
         btnInsert.classList.add("hidden");
         input.classList.add("hidden");
         output.innerHTML = "";
@@ -120,7 +120,7 @@ function onClickInsertNumber(){
         // Stampare quanti numeri sono giusti
         const risultato = document.getElementById("risultato");
 
-        if (score === arrNum.length){
+        if (score === arrNum.length) {
             // Sali di livello e aggiungi 1 numero in più
             livello++
             risultato.innerHTML = "I numeri giusti sono: " + score + ", hai indovinato tutti i numeri! Ora diventeranno: " + livello;
@@ -129,37 +129,37 @@ function onClickInsertNumber(){
 
             btnInizia.innerHTML = "Continua";
 
-        } else if (score === 0){
+        } else if (score === 0) {
             risultato.innerHTML = "Hai sbagliato " + (arrNum.length - score) + " numeri, non ne hai indovinato nessuno!";
 
             risultato.style.color = "red";
 
             livello = 5;
 
-        } else{
-            risultato.innerHTML = "Hai indovinato i numeri: " + numeriIndovinati + ". " + score + " corretti e " +  (arrNum.length - score) + " errati"
-        }     
+        } else {
+            risultato.innerHTML = "Hai indovinato i numeri: " + numeriIndovinati + ". " + score + " corretti e " + (arrNum.length - score) + " errati"
+        }
     }
 }
 
 
-function addNumber (){
-    for (let i = 0; i < arrNum.length; i++){
-        output.innerHTML += `<li>${arrNum[i]}</li>`;  
+function addNumber() {
+    for (let i = 0; i < arrNum.length; i++) {
+        output.innerHTML += `<li>${arrNum[i]}</li>`;
     }
 }
 
-function numRandom(min, max){
+function numRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 
-function numRanUnici(quantità){
+function numRanUnici(quantità) {
     let array = [];
     let number
-    while (array.length < quantità){
+    while (array.length < quantità) {
         number = numRandom(0, 100);
-        if (!array.includes(number)){
+        if (!array.includes(number)) {
             array.push(number);
         }
     }
